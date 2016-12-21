@@ -17,9 +17,6 @@ function start() {
             return;
         } else {
             var $ = cheerio.load(pres.text);
-            // $('.cover-info h4').each(function (i, e) {
-            //     console.log($(e).text());
-            // });
             var a = $('.cover-info a').each(function (i, ele) {
                 var a = $(ele).attr('href');
                 urlArray.push(a);
