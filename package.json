@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "superagent":"3.1.0",
-    "cheerio":"0.22.0"
+    "cheerio":"0.22.0",
+    "eventproxy":"",
+    "async":"",
+    "mongodb":""
 
   }
 }
