@@ -8,11 +8,13 @@ var ep = new eventproxy();
 
 var MongoClient = require('mongodb').MongoClient;
 var DB_CONN_STR = 'mongodb://localhost:27017/doubandb';//数据库名称
+var DB_COLLECTION_CULT='cult_movie_info';
+var DB_COLLECTION_ACTION='action_movie_info';//表名
 
 var insertData = function (db, data, callback)
 {
     //连接到表
-    var collection = db.collection('movie_info');//表名
+    var collection = db.collection(DB_COLLECTION_ACTION);
     //插入数据
     data.forEach(function (ele)
     {
@@ -23,10 +25,10 @@ var insertData = function (db, data, callback)
                 console.log('Error:' + err);
                 return;
             }
-
+            callback(result);
         });
     });
-    callback(result);
+
 };
 
 var saveData = function (data)
@@ -43,12 +45,13 @@ var saveData = function (data)
 };
 
 
-var base_url = 'https://movie.douban.com/tag/cult';
+var base_url_cult = 'https://movie.douban.com/tag/cult';//cult
+var base_url_action = 'https://movie.douban.com/tag/%E5%8A%A8%E4%BD%9C';//动作片
 
 var urlArr = [];
 for (var i = 0; i < 21; i++)
 {
-    var target_url = base_url + '?start=' + i * 20 + '&type=T';
+    var target_url = base_url_action + '?start=' + i * 20 + '&type=T';
     urlArr.push(target_url);
 }
 
@@ -83,12 +86,13 @@ function start()
         });
     });
 
+    ep.after('movieInfo', urlArr.length, function (data)
+    {
+        saveData(data);
+    });
+
 }
 
-ep.after('movieInfo', urlArr.length, function (data)
-{
-    saveData(data);
-});
 
 module.exports = {
     'start': start
